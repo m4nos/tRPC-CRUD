@@ -1,7 +1,14 @@
 // import Image from 'next/image';
+'use client';
+
+import { trpc } from '@/trpc';
 import styles from './page.module.css';
 
 export default function Home() {
+  const { data: tasks, isLoading } = trpc.todo.getTasks.useQuery();
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <main className={styles.main}>
       <div className={styles.page}>
@@ -10,6 +17,10 @@ export default function Home() {
             <input type="text" />
           </li>
         </ul>
+
+        {tasks?.map((task) => (
+          <div key={task.id}>{task.title}</div>
+        ))}
 
         {/* <div className={styles.ctas}>
           <a
