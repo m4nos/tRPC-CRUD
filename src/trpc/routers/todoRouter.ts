@@ -6,8 +6,8 @@ const t = initTRPC.context<Context>().create();
 
 // Define the todo router
 export const todoRouter = t.router({
-  // Create a new task
-  createTask: t.procedure
+  // Create a new todo
+  createTodo: t.procedure
     .input(
       z.object({
         title: z.string(),
@@ -23,13 +23,13 @@ export const todoRouter = t.router({
       });
     }),
 
-  // Get all tasks
-  getTasks: t.procedure.query(async ({ ctx }) => {
+  // Get all todos
+  getTodos: t.procedure.query(async ({ ctx }) => {
     return ctx.prisma.todos.findMany();
   }),
 
-  // Update a task
-  updateTask: t.procedure
+  // Update a todo
+  updateTodo: t.procedure
     .input(
       z.object({
         id: z.number(),
@@ -49,8 +49,8 @@ export const todoRouter = t.router({
       });
     }),
 
-  // Delete a task
-  deleteTask: t.procedure
+  // Delete a todo
+  deleteTodo: t.procedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input, ctx }) => {
       return ctx.prisma.todos.delete({

@@ -1,96 +1,67 @@
-// import Image from 'next/image';
 'use client';
 
-import { trpc } from '@/trpc';
 import styles from './page.module.css';
+import { useEffect, useState } from 'react';
+import { useTodoStore } from '@/store/useTodoStore';
+import { trpc } from '@/trpc';
 
 export default function Home() {
-  const { data: tasks, isLoading } = trpc.todo.getTasks.useQuery();
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const { todos, setTodos, addTodo, deleteTodo } = useTodoStore();
+  const { data: fetchedTodos, isSuccess: isFetchTodosSuccess } =
+    trpc.todo.getTodos.useQuery();
 
-  if (isLoading) return <div>Loading...</div>;
+  const createMutation = trpc.todo.createTodo.useMutation();
+  const deleteMutation = trpc.todo.deleteTodo.useMutation();
+  // const updateMutation = trpc.todo.updateTodo.useMutation();
+
+  useEffect(() => {
+    if (isFetchTodosSuccess) setTodos(fetchedTodos);
+  }, [fetchedTodos, isFetchTodosSuccess, setTodos]);
+
+  const handleAddTodo = async () => {
+    const newTodo = await createMutation.mutateAsync({ title, description });
+    addTodo(newTodo);
+  };
+
+  const handleDeleteTodo = async (id: number) => {
+    await deleteMutation.mutateAsync({ id });
+    deleteTodo(id);
+  };
 
   return (
     <main className={styles.main}>
       <div className={styles.page}>
+        <h1>Todo List</h1>
+
+        <div>
+          <input
+            type="text"
+            placeholder="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <button onClick={handleAddTodo}>Add Todo</button>
+        </div>
+
         <ul>
-          <li>
-            <input type="text" />
-          </li>
+          {todos?.map((todo) => (
+            <li key={todo.id}>
+              <div>
+                <span>{todo.title}</span>
+                <p>{todo.description}</p>
+              </div>
+              <button onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
+            </li>
+          ))}
         </ul>
-
-        {tasks?.map((task) => (
-          <div key={task.id}>{task.title}</div>
-        ))}
-
-        {/* <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div> 
-     <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer> */}
       </div>
     </main>
   );
