@@ -8,7 +8,9 @@ import { trpc } from '@/trpc';
 export default function Home() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+
   const { todos, setTodos, addTodo, deleteTodo } = useTodoStore();
+
   const { data: fetchedTodos, isSuccess: isFetchTodosSuccess } =
     trpc.todo.getTodos.useQuery();
 
@@ -21,8 +23,12 @@ export default function Home() {
   }, [fetchedTodos, isFetchTodosSuccess, setTodos]);
 
   const handleAddTodo = async () => {
-    const newTodo = await createMutation.mutateAsync({ title, description });
-    addTodo(newTodo);
+    if (title.trim()) {
+      const newTodo = await createMutation.mutateAsync({ title, description });
+      addTodo(newTodo);
+      setTitle('');
+      setDescription('');
+    }
   };
 
   const handleDeleteTodo = async (id: number) => {
@@ -33,32 +39,41 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <div className={styles.page}>
-        <h1>Todo List</h1>
+        <h1 className={styles.heading}>Todo List</h1>
 
-        <div>
+        <div className={styles.inputContainer}>
           <input
             type="text"
+            className={styles.inputField}
             placeholder="Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <input
             type="text"
+            className={styles.inputField}
             placeholder="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-          <button onClick={handleAddTodo}>Add Todo</button>
+          <button className={styles.addButton} onClick={handleAddTodo}>
+            Add Todo
+          </button>
         </div>
 
-        <ul>
+        <ul className={styles.todoList}>
           {todos?.map((todo) => (
-            <li key={todo.id}>
+            <li className={styles.todoItem} key={todo.id}>
               <div>
-                <span>{todo.title}</span>
-                <p>{todo.description}</p>
+                <span className={styles.todoTitle}>{todo.title}</span>
+                <p className={styles.todoDescription}>{todo.description}</p>
               </div>
-              <button onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
+              <button
+                className={styles.deleteButton}
+                onClick={() => handleDeleteTodo(todo.id)}
+              >
+                Delete
+              </button>
             </li>
           ))}
         </ul>
