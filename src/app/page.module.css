@@ -80,35 +80,3 @@
 .todoItem:hover {
   background-color: #f1f5f9;
 }
-
-.todoContent {
-  flex-grow: 1;
-  text-align: left;
-}
-
-.todoTitle {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #111827;
-}
-
-.todoDescription {
-  font-size: 0.9rem;
-  color: #6b7280;
-}
-
-.deleteButton {
-  padding: 0.3rem 0.8rem;
-  font-size: 0.875rem;
-  color: #f87171;
-  background-color: transparent;
-  border: 1px solid #f87171;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.deleteButton:hover {
-  background-color: #f87171;
-  color: #ffffff;
-}

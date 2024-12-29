@@ -4,19 +4,18 @@ import styles from './page.module.css';
 import { useEffect, useState } from 'react';
 import { useTodoStore } from '@/store/useTodoStore';
 import { trpc } from '@/trpc';
+import { TodoCard } from './components/TodoCard';
 
 export default function Home() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
-  const { todos, setTodos, addTodo, deleteTodo } = useTodoStore();
+  const { todos, setTodos, addTodo } = useTodoStore();
 
   const { data: fetchedTodos, isSuccess: isFetchTodosSuccess } =
     trpc.todo.getTodos.useQuery();
 
   const createMutation = trpc.todo.createTodo.useMutation();
-  const deleteMutation = trpc.todo.deleteTodo.useMutation();
-  // const updateMutation = trpc.todo.updateTodo.useMutation();
 
   useEffect(() => {
     if (isFetchTodosSuccess) setTodos(fetchedTodos);
@@ -29,11 +28,6 @@ export default function Home() {
       setTitle('');
       setDescription('');
     }
-  };
-
-  const handleDeleteTodo = async (id: number) => {
-    await deleteMutation.mutateAsync({ id });
-    deleteTodo(id);
   };
 
   return (
@@ -64,16 +58,7 @@ export default function Home() {
         <ul className={styles.todoList}>
           {todos?.map((todo) => (
             <li className={styles.todoItem} key={todo.id}>
-              <div>
-                <span className={styles.todoTitle}>{todo.title}</span>
-                <p className={styles.todoDescription}>{todo.description}</p>
-              </div>
-              <button
-                className={styles.deleteButton}
-                onClick={() => handleDeleteTodo(todo.id)}
-              >
-                Delete
-              </button>
+              <TodoCard todo={todo} />
             </li>
           ))}
         </ul>

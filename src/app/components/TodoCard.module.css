@@ -1,0 +1,105 @@
+.inputField {
+  width: calc(50% - 8px);
+  padding: 0.5rem;
+  margin: 0 4px;
+  font-size: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.inputField:focus {
+  border-color: #3b82f6;
+}
+
+.todoContainer {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.todoContent {
+  flex-grow: 1;
+  text-align: left;
+}
+
+.todoTitle {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #111827;
+}
+
+.todoDescription {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.optionsButtons {
+  display: flex;
+  gap: 10;
+}
+
+.editButton {
+  padding: 0.3rem 0.8rem;
+  font-size: 0.875rem;
+  color: #7185f8;
+  background-color: transparent;
+  border: 1px solid #9679ff5d;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.editButton:hover {
+  background-color: #7185f8;
+  color: #ffffff;
+}
+
+.deleteButton {
+  padding: 0.3rem 0.8rem;
+  font-size: 0.875rem;
+  color: #f87171;
+  background-color: transparent;
+  border: 1px solid #f87171;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.deleteButton:hover {
+  background-color: #f87171;
+  color: #ffffff;
+}
+
+.saveButton {
+  padding: 0.3rem 0.8rem;
+  font-size: 0.875rem;
+  color: #7185f8;
+  background-color: transparent;
+  border: 1px solid #9679ff5d;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.saveButton:hover {
+  background-color: #7185f8;
+  color: #ffffff;
+}
+
+.cancelButton {
+  padding: 0.3rem 0.8rem;
+  font-size: 0.875rem;
+  color: #f87171;
+  background-color: transparent;
+  border: 1px solid #f87171;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancelButton:hover {
+  background-color: #f87171;
+  color: #ffffff;
+}

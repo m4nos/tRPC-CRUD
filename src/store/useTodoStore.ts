@@ -5,15 +5,7 @@ interface TodoStore {
   todos: Todo[];
   setTodos: (todos: Todo[]) => void;
   addTodo: (todo: Todo) => void;
-  updateTodo: ({
-    id,
-    title,
-    description,
-  }: {
-    id: number;
-    title: string;
-    description: string;
-  }) => void;
+  updateTodo: (todo: Todo) => void;
   deleteTodo: (id: number) => void;
 }
 
